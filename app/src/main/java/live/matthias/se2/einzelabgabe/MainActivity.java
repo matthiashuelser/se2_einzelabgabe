@@ -16,6 +16,33 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        TextView catfact = findViewById(R.id.catfact);
+        CatFacts catFactsObject = new CatFacts();
+        catFactsObject.start();
+        try {
+            catFactsObject.join(5000);
+            catfact.setText(catFactsObject.getCatFact());
+        } catch (InterruptedException e) {
+            catfact.setText("Error getting random Fact about cats. Sorry.");
+        }
+
+        Button catFactReload = findViewById(R.id.catfactreload);
+        catFactReload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TextView catfact = findViewById(R.id.catfact);
+                CatFacts catFactsObject = new CatFacts();
+                catFactsObject.start();
+                try {
+                    catFactsObject.join(5000);
+                    catfact.setText(catFactsObject.getCatFact());
+                } catch (InterruptedException e) {
+                    catfact.setText("Error getting random Fact about cats. Sorry.");
+                }
+            }
+        });
+
         Button sortBtn = findViewById(R.id.sortBtn);
 
         //Button, das Sortieren der Ziffern der Matrikelnummer auslöst
