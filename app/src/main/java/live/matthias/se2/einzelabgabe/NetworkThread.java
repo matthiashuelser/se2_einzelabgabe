@@ -12,11 +12,20 @@ public class NetworkThread extends Thread{
 
     public void run() {
         try {
+
+            //Erstelle ein neues Socket mit dem gegebenen Host und Port.
             Socket clientSocket = new Socket("se2-isys.aau.at", 53212);
+
+            //Erstelle einen OutputStream mit dem die Daten an den Server gesendet werden.
             DataOutputStream toServer = new DataOutputStream(clientSocket.getOutputStream());
+
+            //Erstelle einen BufferedReader um Daten vom Server empfangen zu können.
             BufferedReader fromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+
+            //Sende den Eingabe-String an den Server und erhalte Antwort vom Server.
             toServer.writeBytes(input + '\n');
             output = "Ausgabe: " + fromServer.readLine();
+
         } catch (IOException e) {
             output = "Fehler!";
         }
