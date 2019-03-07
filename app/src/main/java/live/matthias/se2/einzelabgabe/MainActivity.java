@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -33,13 +34,21 @@ public class MainActivity extends AppCompatActivity {
                 EditText input = findViewById(R.id.inputtext);
                 TextView output = findViewById(R.id.output);
                 String s = input.getText().toString();
-                NetworkHandler networkHandler = new NetworkHandler();
+                String outputText;
+                NetworkThread t = new NetworkThread();
+                ProgressBar progressBar = findViewById(R.id.progressBar);
+
+                t.setInput(s);
+                t.start();
+                progressBar.setVisibility(View.VISIBLE);
                 try {
-                    String displayText = networkHandler.handleNetwork(s);
-                    output.setText(displayText);
-                } catch (IOException e) {
-                    output.setText("Ein Fehler ist aufgetreten");
+                    t.join(10000);
+                    outputText = "Ausgabe: " + t.getOutput();
+                } catch (InterruptedException e) {
+                    outputText = "Fehler!";
                 }
+                progressBar.setVisibility(View.INVISIBLE);
+                output.setText(outputText);
             }
         });
     }
