@@ -7,13 +7,13 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 
 public class NetworkHandler {
-    public String handleNetwork(String s) throws IOException {
-        Socket socket = new Socket("se2-isys.aau.at", 53212);
-        DataOutputStream outToServer = new DataOutputStream(socket.getOutputStream());
-        BufferedReader inFromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        outToServer.writeBytes(s);
-        String fromServer = inFromServer.readLine();
-        socket.close();
-        return fromServer;
+    public String handleNetwork(String input) throws IOException {
+        Socket clientSocket = new Socket("se2-isys.aau.at", 53212);
+        DataOutputStream toServer = new DataOutputStream(clientSocket.getOutputStream());
+        BufferedReader fromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        toServer.writeBytes(input + '\n');
+        String output;
+        output = fromServer.readLine();
+        return output;
     }
 }
