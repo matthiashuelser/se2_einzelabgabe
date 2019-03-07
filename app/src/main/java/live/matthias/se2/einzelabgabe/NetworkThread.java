@@ -16,7 +16,7 @@ public class NetworkThread extends Thread{
             DataOutputStream toServer = new DataOutputStream(clientSocket.getOutputStream());
             BufferedReader fromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             toServer.writeBytes(input + '\n');
-            output = fromServer.readLine();
+            output = "Ausgabe: " + fromServer.readLine();
         } catch (IOException e) {
             output = "Fehler!";
         }

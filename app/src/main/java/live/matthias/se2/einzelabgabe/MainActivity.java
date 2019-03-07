@@ -1,5 +1,7 @@
 package live.matthias.se2.einzelabgabe;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -7,8 +9,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,24 +31,33 @@ public class MainActivity extends AppCompatActivity {
         networkBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ProgressBar progressBar = findViewById(R.id.progressBar);
+                progressBar.setVisibility(View.VISIBLE);
                 EditText input = findViewById(R.id.inputtext);
                 TextView output = findViewById(R.id.output);
                 String s = input.getText().toString();
                 String outputText;
                 NetworkThread t = new NetworkThread();
-                ProgressBar progressBar = findViewById(R.id.progressBar);
-
                 t.setInput(s);
                 t.start();
-                progressBar.setVisibility(View.VISIBLE);
                 try {
                     t.join(10000);
-                    outputText = "Ausgabe: " + t.getOutput();
+                    outputText = t.getOutput();
                 } catch (InterruptedException e) {
                     outputText = "Fehler!";
                 }
                 progressBar.setVisibility(View.INVISIBLE);
                 output.setText(outputText);
+            }
+        });
+        TextView matthiasLink = findViewById(R.id.matthiasLink);
+        matthiasLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String url = "http://matthias.live";
+                Uri uri = Uri.parse(url);
+                Intent intent= new Intent(Intent.ACTION_VIEW,uri);
+                startActivity(intent);
             }
         });
     }
